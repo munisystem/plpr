@@ -1,6 +1,6 @@
 'use strict';
 
-const REGEX = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.?\d* \D{3}).* duration: (\d+\.\d+) ms  execute <unnamed>: (.+)?/;
+const REGEX = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.?\d* \D{3}).* duration: (\d+\.\d+) ms  execute .*: (.+)?/;
 var objs = [];
 
 module.exports = data => {
