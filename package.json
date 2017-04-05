@@ -1,0 +1,33 @@
+{
+  "name": "plpr",
+  "version": "1.0.0",
+  "description": "PostgreSQL log parser",
+  "main": "lib/index.js",
+  "scripts": {
+    "watch": "babel ./src/ --watch -d ./lib/ --source-maps inline",
+    "build": "babel ./src/ -d ./lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munisystem/plpr.git"
+  },
+  "keywords": [
+    "postgresql",
+    "psql",
+    "log",
+    "parser"
+  ],
+  "files": [
+    "lib"
+  ],
+  "author": "munisystem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/munisystem/plpr/issues"
+  },
+  "homepage": "https://github.com/munisystem/plpr#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0"
+  }
+}
