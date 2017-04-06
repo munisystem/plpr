@@ -26,6 +26,6 @@ module.exports = data => {
 function parser(data) {
   const matches = data.match(REGEX);
   if (matches !== null) {
-    objs.push({timestamp: matches[1], duration: matches[2], query: matches[3]});
+    objs.push({timestamp: matches[1], duration: Number(matches[2]), query: matches[3]});
   }
 }
