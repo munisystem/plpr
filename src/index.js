@@ -1,15 +1,19 @@
 'use strict';
 
+const moment = require('moment');
+
 const regexBase = 'LOG:  duration: (\\d+\\.\\d+) ms  execute .*: (.+)?';
 const regexps = {
   '%u': ['user', '([0-9a-zA-Z\\.\\-\\_\\[\\]]*)?'],
-  '%d': ['dbname','([0-9a-zA-Z\\.\\-\\_\\[\\]]*)?'],
+  '%d': ['dbname', '([0-9a-zA-Z\\.\\-\\_\\[\\]]*)?'],
   '%r': ['hostport', '(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\(\\d+\\))?'],
   '%h': ['host', '(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})?'],
   '%p': ['pid', '(\\d+)*'],
-  '%t': ['timestamp', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} \\D{3})'],
-  '%m': ['mtimestamp', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d* \\D{3})'],
+  '%t': ['endtime', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} \\D{3})'],
+  '%m': ['endtime', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d* \\D{3})'],
 };
+
+const numParams = ['pid'];
 
 var objs = [];
 var obj_keys = [];
@@ -60,11 +64,29 @@ function parser(data) {
   const matches = data.match(regex);
   if (matches !== null) {
     var obj = {};
+    var duration = Number(matches[obj_keys.length+1]);
+    var query = matches[obj_keys.length+2];
+
     for (var i = 0; i < obj_keys.length; i++) {
-      obj[obj_keys[i]] = matches[i+1];
+      var key = obj_keys[i];
+      var value = matches[i+1];
+
+      if (key === "endtime") {
+        var endtime = Date.parse(value);
+        var starttime = endtime - duration;
+        obj['starttime'] = moment(starttime).format();
+        obj['endtime'] = moment(endtime).format();
+      } else if (numParams.indexOf(key) >= 0) {
+        obj[key] = Number(value);
+      } else if (key === "hostport") {
+        obj[key] = value.replace(/\(/, ':').replace(/\)/, '');
+      } else {
+        obj[key] = value;
+      }
     }
-    obj['duration'] = matches[obj_keys.length+1];
-    obj['query'] = matches[obj_keys.length+2];
+
+    obj['duration'] = duration;
+    obj['query'] = query;
     objs.push(obj);
   }
 }
