@@ -1,6 +1,6 @@
 {
   "name": "plpr",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "PostgreSQL log parser",
   "main": "lib/index.js",
   "scripts": {
