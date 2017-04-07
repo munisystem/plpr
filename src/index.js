@@ -51,8 +51,8 @@ module.exports = (data, format) => {
       }
       content.push(line);
     }
-    parser(content.join(''));
   });
+  parser(content.join(''));
   return objs;
 }
 
