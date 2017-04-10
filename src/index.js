@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 
-const regexBase = 'LOG:  duration: (\\d+\\.\\d+) ms  execute .*: (.+)?';
+const regexBase = 'LOG:  duration: (\\d+\\.\\d+) ms  (execute|statement).*: (.+)?';
 const regexps = {
   '%u': ['user', '([0-9a-zA-Z\\.\\-\\_\\[\\]]*)?'],
   '%d': ['dbname', '([0-9a-zA-Z\\.\\-\\_\\[\\]]*)?'],
@@ -65,7 +65,7 @@ function parser(data) {
   if (matches !== null) {
     var obj = {};
     var duration = Number(matches[obj_keys.length+1]);
-    var query = matches[obj_keys.length+2];
+    var query = matches[obj_keys.length+3];
 
     for (var i = 0; i < obj_keys.length; i++) {
       var key = obj_keys[i];
