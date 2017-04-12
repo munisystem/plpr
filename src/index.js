@@ -78,8 +78,6 @@ function parser(data) {
         obj['endtime'] = moment(endtime).format();
       } else if (numParams.indexOf(key) >= 0) {
         obj[key] = Number(value);
-      } else if (key === "hostport") {
-        obj[key] = value.replace(/\(/, ':').replace(/\)/, '');
       } else {
         obj[key] = value;
       }
