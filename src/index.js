@@ -72,7 +72,7 @@ function parser(data) {
       var value = matches[i+1];
 
       if (key === "time") {
-        obj['time'] = Date.parse(value);
+        obj['time'] = value;
       } else if (numParams.indexOf(key) >= 0) {
         obj[key] = Number(value);
       } else {
