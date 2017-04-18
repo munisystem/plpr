@@ -9,8 +9,8 @@ const regexps = {
   '%r': ['hostport', '(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\(\\d+\\))?'],
   '%h': ['host', '(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})?'],
   '%p': ['pid', '(\\d+)*'],
-  '%t': ['endtime', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} \\D{3})'],
-  '%m': ['endtime', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d* \\D{3})'],
+  '%t': ['time', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} \\D{3})'],
+  '%m': ['time', '(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d* \\D{3})'],
 };
 
 const numParams = ['pid'];
@@ -71,11 +71,8 @@ function parser(data) {
       var key = obj_keys[i];
       var value = matches[i+1];
 
-      if (key === "endtime") {
-        var endtime = Date.parse(value);
-        var starttime = endtime - duration;
-        obj['starttime'] = moment(starttime).format();
-        obj['endtime'] = moment(endtime).format();
+      if (key === "time") {
+        obj['time'] = Date.parse(value);
       } else if (numParams.indexOf(key) >= 0) {
         obj[key] = Number(value);
       } else {
