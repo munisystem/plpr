@@ -15,11 +15,11 @@ const regexps = {
 
 const numParams = ['pid'];
 
-var objs = [];
-var obj_keys = [];
-var regex = null;
-
 module.exports = (data, format) => {
+  let objs = [];
+  let obj_keys = [];
+  let regex = null;
+
   format = format.replace(/\./, '\\.')
                  .replace(/\-/, '\\-')
                  .replace(/\_/, '\\_')
@@ -34,7 +34,7 @@ module.exports = (data, format) => {
                  .replace(/\}/, '\\}');
 
   while (format.match(/%[udrhptm]/) !== null) {
-    var match = format.match(/%[udrhptm]/);
+    let match = format.match(/%[udrhptm]/);
     format = format.replace(match, regexps[match][1]);
     obj_keys.push(regexps[match][0]);
   }
@@ -43,33 +43,33 @@ module.exports = (data, format) => {
 
   const lines = data.split(/\r\n|\r|\n/);
 
-  var content = [];
+  let content = [];
   lines.forEach(line => {
     if (line.includes(':  ')) {
       if (content.length == 0) {
         content.push(line);
         return;
       } else {
-        parser(content.join(''));
+        parser(content.join(''), objs, obj_keys, regex);
         content = [];
       }
       content.push(line);
     }
   });
-  parser(content.join(''));
+  parser(content.join(''), objs, obj_keys, regex);
   return objs;
 }
 
-function parser(data) {
+function parser(data, objs, obj_keys, regex) {
   const matches = data.match(regex);
   if (matches !== null) {
-    var obj = {};
-    var duration = Number(matches[obj_keys.length+1]);
-    var query = matches[obj_keys.length+3];
+    let obj = {};
+    let duration = Number(matches[obj_keys.length+1]);
+    let query = matches[obj_keys.length+3];
 
-    for (var i = 0; i < obj_keys.length; i++) {
-      var key = obj_keys[i];
-      var value = matches[i+1];
+    for (let i = 0; i < obj_keys.length; i++) {
+      let key = obj_keys[i];
+      let value = matches[i+1];
 
       if (key === "time") {
         obj['time'] = value;
